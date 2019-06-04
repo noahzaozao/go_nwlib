@@ -1,4 +1,4 @@
-package conf
+package utils
 
 import (
 	goconfig "github.com/micro/go-config"
