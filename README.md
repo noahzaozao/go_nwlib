@@ -1,9 +1,40 @@
 # go_nwlib
 
-### config
+### cache
 
-xxx
+#### cache.go
 
-### tools
+```go
+CacheMgr
+```
 
-xxx
+### conf
+
+```yaml
+cache
+database
+oss
+setting
+``` 
+
+### database
+
+#### database.go
+
+```go
+DBManager
+```
+
+### models
+
+#### User
+
+```go
+
+```
+
+#### WechatMappUser
+
+```go
+
+```
