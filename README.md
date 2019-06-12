@@ -27,16 +27,28 @@ setting
 DBManager
 ```
 
+### error
+
+```go
+GeneralRaiseError
+```
+
 ### models
 
 #### User
 
 ```go
-
 ```
 
 #### WechatMappUser
 
 ```go
+```
 
+### token
+
+```go
+Encode
+Decode
+CheckJWT
 ```
