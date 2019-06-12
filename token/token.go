@@ -11,7 +11,7 @@ type User interface {
 	getUuid() string
 }
 
-func tokenEncode(user User, issuer string, subject string, secretKey string) (string, error) {
+func Encode(user User, issuer string, subject string, secretKey string) (string, error) {
 	expireToken := time.Now().Add(time.Minute * 15).Unix()
 
 	// Create the Claims
@@ -30,7 +30,7 @@ func tokenEncode(user User, issuer string, subject string, secretKey string) (st
 	return token.SignedString([]byte(secretKey))
 }
 
-func tokenDecode(tokenString string, secretKey string) (*jwt.StandardClaims, error) {
+func Decode(tokenString string, secretKey string) (*jwt.StandardClaims, error) {
 
 	// Parse the token
 	token, err := jwt.ParseWithClaims(
