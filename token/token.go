@@ -1,8 +1,11 @@
 package token
 
 import (
+	"bytes"
+	"encoding/json"
 	"github.com/dgrijalva/jwt-go"
 	gerror "github.com/noahzaozao/go_nwlib/error"
+	"strings"
 	"time"
 )
 
@@ -51,4 +54,25 @@ func Decode(tokenString string, secretKey string) (*jwt.StandardClaims, error) {
 	} else {
 		return nil, gerror.GeneralRaiseError("token is nil")
 	}
+}
+
+func CheckJWT(tokenString string) (*jwt.StandardClaims, error) {
+	parts := strings.Split(tokenString, ".")
+	if len(parts) != 3 {
+		return nil, jwt.NewValidationError("token contains an invalid number of segments", jwt.ValidationErrorMalformed)
+	}
+
+	claimBytes, err := jwt.DecodeSegment(parts[1])
+	if err != nil {
+		return nil, jwt.ValidationError{Inner: err, Errors: jwt.ValidationErrorMalformed}
+	}
+
+	claim := &jwt.StandardClaims{}
+	dec := json.NewDecoder(bytes.NewBuffer(claimBytes))
+	err = dec.Decode(claim)
+	if err != nil {
+		return nil, jwt.ValidationError{Inner: err, Errors: jwt.ValidationErrorMalformed}
+	}
+
+	return claim, nil
 }
