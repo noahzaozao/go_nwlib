@@ -7,8 +7,8 @@ import (
 )
 
 type User interface {
-	getId() string
-	getUuid() string
+	GetId() string
+	GetUuid() string
 }
 
 func Encode(user User, issuer string, subject string, secretKey string) (string, error) {
@@ -19,8 +19,8 @@ func Encode(user User, issuer string, subject string, secretKey string) (string,
 		ExpiresAt: expireToken,
 		Issuer:    issuer,
 		Subject:   subject,
-		Audience:  user.getUuid(),
-		Id:        user.getId(),
+		Audience:  user.GetUuid(),
+		Id:        user.GetId(),
 	}
 
 	// Create token
