@@ -20,7 +20,7 @@ func Encode(user User, issuer string, subject string, secretKey string) (string,
 		Issuer:    issuer,
 		Subject:   subject,
 		Audience:  user.getUuid(),
-		Id:        user.getID(),
+		Id:        user.getId(),
 	}
 
 	// Create token
