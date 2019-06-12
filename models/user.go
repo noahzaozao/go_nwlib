@@ -2,7 +2,6 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"strconv"
 )
 
 type User struct {
@@ -27,12 +26,4 @@ type WechatMappUser struct {
 	AvatarUrl string `gorm:"TYPE:VARCHAR(255);"`
 	OpenId    string `gorm:"TYPE:VARCHAR(255);"`
 	UnionId   string `gorm:"TYPE:VARCHAR(255);"`
-}
-
-func (user *User) getID() string {
-	return strconv.Itoa(int(user.ID))
-}
-
-func (user *User) getUuid() string {
-	return user.Uuid
 }
