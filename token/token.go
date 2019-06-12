@@ -7,7 +7,7 @@ import (
 )
 
 type User interface {
-	GetId() string
+	GetIdStr() string
 	GetUuid() string
 }
 
@@ -20,7 +20,7 @@ func Encode(user User, issuer string, subject string, secretKey string) (string,
 		Issuer:    issuer,
 		Subject:   subject,
 		Audience:  user.GetUuid(),
-		Id:        user.GetId(),
+		Id:        user.GetIdStr(),
 	}
 
 	// Create token
