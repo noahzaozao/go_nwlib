@@ -7,7 +7,7 @@ import (
 )
 
 type User interface {
-	getID() string
+	getId() string
 	getUuid() string
 }
 
