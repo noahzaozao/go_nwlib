@@ -6,9 +6,9 @@
 
 #### cache.go
 
-```go
-CacheMgr
-```
+| Name | Type | Desc |
+| ----- | ----- | ----- |
+| CacheMgr | struct | |
 
 ### conf
 
@@ -23,32 +23,32 @@ setting
 
 #### database.go
 
-```go
-DBManager
-```
+| Name | Type | Desc |
+| ----- | ----- | ----- |
+| DBManager | struct | |
 
 ### error
 
-```go
-GeneralRaiseError
-```
+| Name | Type | Desc |
+| ----- | ----- | ----- |
+| GeneralRaiseError | struct | |
 
 ### models
 
 #### User
 
-```go
-```
-
 #### WechatMappUser
-
-```go
-```
 
 ### token
 
-```go
-Encode
-Decode
-CheckJWT
-```
+| Name | Type | Desc |
+| ----- | ----- | ----- |
+| User | interface | |
+| TokenMgr | struct | |
+| Encode | func | |
+| Decode | func | |
+| GenerateJWT | func | |
+| GetJWT | func | |
+| GetClaims | func | |
+| CheckJWT | func | |
+| CleanJWT  | func | |
