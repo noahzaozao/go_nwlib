@@ -4,24 +4,23 @@
 
 ### cache
 
-#### cache.go
-
 | Name | Type | Desc |
 | ----- | ----- | ----- |
 | CacheMgr | struct | |
 
 ### conf
 
-```yaml
-cache
-database
-oss
-setting
-``` 
+| Name | Type | Desc |
+| ----- | ----- | ----- |
+| RedisConfig | struct | |
+| DBConfig | struct | |
+| OSSConfig | struct | |
+| SettingsConfig | struct | |
+| LoadConfig | func | |
+| GetConfig | func | |
+| CheckSettingConfig | func | |
 
 ### database
-
-#### database.go
 
 | Name | Type | Desc |
 | ----- | ----- | ----- |
@@ -31,13 +30,15 @@ setting
 
 | Name | Type | Desc |
 | ----- | ----- | ----- |
-| GeneralRaiseError | struct | |
+| GeneralRaiseError | func | |
+| GeneralError | struct | |
 
 ### models
 
-#### User
-
-#### WechatMappUser
+| Name | Type | Desc |
+| ----- | ----- | ----- |
+| User | struct | |
+| WechatMappUser | struct | |
 
 ### token
 
