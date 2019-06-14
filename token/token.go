@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"github.com/dgrijalva/jwt-go"
 	gerror "github.com/noahzaozao/go_nwlib/error"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc/metadata"
+	"log"
 	"strings"
 	"time"
 )
@@ -54,6 +57,20 @@ func Decode(tokenString string, secretKey string) (*jwt.StandardClaims, error) {
 	} else {
 		return nil, gerror.GeneralRaiseError("token is nil")
 	}
+}
+
+func GetJWT(ctx context.Context) (string, error) {
+	if _, ok := metadata.FromIncomingContext(ctx); !ok {
+		log.Println("WARNING: No MetaData")
+		return "", gerror.GeneralRaiseError("WARNING: No MetaData")
+	}
+	metaData, _ := metadata.FromIncomingContext(ctx)
+	if _, ok := metaData["authorization"]; !ok {
+		log.Println("WARNING: No Auth	Information")
+		return "", gerror.GeneralRaiseError("WARNING: No Auth Information")
+	}
+	jwtToken := metaData["authorization"]
+	return strings.Join(jwtToken, ""), nil
 }
 
 func CheckJWT(tokenString string) (*jwt.StandardClaims, error) {

@@ -3,10 +3,13 @@ module github.com/noahzaozao/go_nwlib
 go 1.12
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/jinzhu/gorm v1.9.8
 	github.com/micro/go-config v1.1.0
+	golang.org/x/net v0.0.0-20190313220215-9f648a60d977
+	google.golang.org/grpc v1.19.0
 )
 
 replace github.com/sourcegraph/go-diff => github.com/sourcegraph/go-diff v0.5.1
