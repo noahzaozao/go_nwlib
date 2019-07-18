@@ -14,6 +14,4 @@ require (
 	google.golang.org/grpc v1.21.1
 )
 
-replace github.com/golang/lint v0.0.0-20190313153728-d0100b6bd8b3 => golang.org/x/lint v0.0.0-20190409202823-959b441ac422
-
 replace github.com/testcontainers/testcontainer-go => github.com/testcontainers/testcontainers-go v0.0.0-20181115231424-8e868ca12c0f
