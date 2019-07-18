@@ -1,7 +1,7 @@
 package utils
 
 import (
-	goconfig "github.com/micro/go-config"
+	goconfig "github.com/micro/go-micro/config"
 	"log"
 
 	setting_conf "github.com/noahzaozao/go_nwlib/conf/setting"
