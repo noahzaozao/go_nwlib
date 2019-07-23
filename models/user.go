@@ -26,4 +26,5 @@ type WechatMappUser struct {
 	AvatarUrl string `gorm:"TYPE:VARCHAR(255);"`
 	OpenId    string `gorm:"TYPE:VARCHAR(255);"`
 	UnionId   string `gorm:"TYPE:VARCHAR(255);"`
+	AppID	  string `gorm:"TYPE:VARCHAR(255);"`
 }
