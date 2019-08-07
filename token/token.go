@@ -34,8 +34,8 @@ func TokenMgr() *TokenManager {
 	return instance
 }
 
-func (tokenMgr *TokenManager) Encode(user User, issuer string, subject string, secretKey string) (string, error) {
-	expireToken := time.Now().Add(time.Minute * 15).Unix()
+func (tokenMgr *TokenManager) Encode(user User, issuer string, subject string, secretKey string, d time.Duration) (string, error) {
+	expireToken := time.Now().Add(d).Unix()
 	// Create the Claims
 	standardClaims := jwt.StandardClaims{
 		ExpiresAt: expireToken,
@@ -72,19 +72,28 @@ func (tokenMgr *TokenManager) Decode(tokenString string, secretKey string) (*jwt
 }
 
 // Generate JWT from Uuid
-func (tokenMgr *TokenManager) GenerateJWT(user User) (string, error) {
+func (tokenMgr *TokenManager) GenerateJWT(user User) (string, string, error) {
 	client, err := cache.CacheMgr().Conn()
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	userJWTSecret := uuid.NewV4().String()
+
 	client.HSet(UserSessionPrefix+user.GetUuid(), "jwt_token_secret", userJWTSecret)
-	client.Expire(UserSessionPrefix+user.GetUuid(), time.Hour*48)
-	jwtToken, err := tokenMgr.Encode(user, "user.srv", "normal", userJWTSecret)
+	client.Expire(UserSessionPrefix+user.GetUuid(), time.Minute*20)
+
+	client.HSet(UserSessionPrefix+user.GetUuid(), "refresh_token_secret", userJWTSecret)
+	client.Expire(UserSessionPrefix+user.GetUuid(), time.Hour*24*5)
+
+	jwtToken, err := tokenMgr.Encode(user, "user.srv", "normal", userJWTSecret, time.Minute*15)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
-	return jwtToken, nil
+	refreshToken, err := tokenMgr.Encode(user, "user.srv", "normal", userJWTSecret, time.Hour*24*5)
+	if err != nil {
+		return "", "", err
+	}
+	return jwtToken, refreshToken, nil
 }
 
 // Get JWT from ctx
@@ -132,6 +141,27 @@ func (tokenMgr *TokenManager) CheckJWT(tokenString string) (string, error) {
 		return "", err
 	}
 	secretKey, err := client.HGet(UserSessionPrefix+claim.Audience, "jwt_token_secret").Result()
+	if err != nil {
+		return "", err
+	}
+	authClaims, err := tokenMgr.Decode(tokenString, secretKey)
+	if err != nil {
+		return "", err
+	}
+	return authClaims.Id, nil
+}
+
+// Check JWT from tokenString
+func (tokenMgr *TokenManager) CheckRefreshToken(tokenString string) (string, error) {
+	client, err := cache.CacheMgr().Conn()
+	if err != nil {
+		return "", err
+	}
+	claim, err := tokenMgr.GetClaims(tokenString)
+	if err != nil {
+		return "", err
+	}
+	secretKey, err := client.HGet(UserSessionPrefix+claim.Audience, "refresh_token_secret").Result()
 	if err != nil {
 		return "", err
 	}
