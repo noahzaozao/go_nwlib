@@ -80,9 +80,6 @@ func (tokenMgr *TokenManager) GenerateJWT(user User) (string, string, error) {
 	userJWTSecret := uuid.NewV4().String()
 
 	client.HSet(UserSessionPrefix+user.GetUuid(), "jwt_token_secret", userJWTSecret)
-	client.Expire(UserSessionPrefix+user.GetUuid(), time.Minute*20)
-
-	client.HSet(UserSessionPrefix+user.GetUuid(), "refresh_token_secret", userJWTSecret)
 	client.Expire(UserSessionPrefix+user.GetUuid(), time.Hour*24*5)
 
 	jwtToken, err := tokenMgr.Encode(user, "user.srv", "normal", userJWTSecret, time.Minute*15)
@@ -141,27 +138,6 @@ func (tokenMgr *TokenManager) CheckJWT(tokenString string) (string, error) {
 		return "", err
 	}
 	secretKey, err := client.HGet(UserSessionPrefix+claim.Audience, "jwt_token_secret").Result()
-	if err != nil {
-		return "", err
-	}
-	authClaims, err := tokenMgr.Decode(tokenString, secretKey)
-	if err != nil {
-		return "", err
-	}
-	return authClaims.Id, nil
-}
-
-// Check JWT from tokenString
-func (tokenMgr *TokenManager) CheckRefreshToken(tokenString string) (string, error) {
-	client, err := cache.CacheMgr().Conn()
-	if err != nil {
-		return "", err
-	}
-	claim, err := tokenMgr.GetClaims(tokenString)
-	if err != nil {
-		return "", err
-	}
-	secretKey, err := client.HGet(UserSessionPrefix+claim.Audience, "refresh_token_secret").Result()
 	if err != nil {
 		return "", err
 	}
